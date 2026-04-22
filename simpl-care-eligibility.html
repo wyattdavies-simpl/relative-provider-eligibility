@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Paid Parent Provider Eligibility & Income Estimator | Simpl Care</title>
+<meta name="description" content="A free tool for Wyoming parents and case managers: check if you may qualify as a paid Personal Care provider under the DD Waiver, and see what you could earn through Simpl Care." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --blue:       #077abd;
+    --blue-2:     #0491d9;
+    --blue-deep:  #003f51;
+    --yellow:     #edfc3d;
+    --orange:     #de4e20;
+    --gold:       #a08221;
+    --bg:         #eef6fb;
+    --white:      #ffffff;
+    --ink:        #0b2b38;
+    --ink-soft:   #3c5d6a;
+    --line:       #d6e6ef;
+    --shadow-sm:  0 2px 8px rgba(7, 122, 189, 0.06);
+    --shadow-md:  0 10px 30px rgba(7, 122, 189, 0.10);
+    --shadow-lg:  0 24px 60px rgba(7, 122, 189, 0.18);
+    --radius-sm:  14px;
+    --radius-md:  22px;
+    --radius-lg:  32px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+    position: relative;
+  }
+
+  /* Decorative background blobs */
+  body::before,
+  body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: 0;
+    pointer-events: none;
+  }
+  body::before {
+    width: 520px; height: 520px;
+    background: radial-gradient(circle, rgba(4,145,217,0.18), transparent 70%);
+    top: -200px; right: -150px;
+  }
+  body::after {
+    width: 420px; height: 420px;
+    background: radial-gradient(circle, rgba(237,252,61,0.25), transparent 70%);
+    bottom: -150px; left: -100px;
+  }
+
+  .shell {
+    max-width: 880px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* -------- HEADER -------- */
+  .brandbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .logo {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    color: var(--blue-deep);
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-dot {
+    width: 14px; height: 14px;
+    background: var(--blue-2);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(4,145,217,0.2);
+  }
+  .brandbar-tag {
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-weight: 500;
+    background: var(--white);
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+  }
+
+  /* -------- CARD -------- */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* -------- HERO -------- */
+  .hero {
+    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-2) 100%);
+    color: var(--white);
+    padding: 56px 48px 64px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 340px; height: 340px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.10);
+    top: -120px; right: -80px;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(237,252,61,0.18);
+    bottom: -60px; right: 120px;
+  }
+  .hero-inner { position: relative; z-index: 1; max-width: 620px; }
+  .eyebrow {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+  }
+  .hero h1 {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: clamp(30px, 5vw, 44px);
+    line-height: 1.1;
+    margin-bottom: 18px;
+    letter-spacing: -0.8px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: var(--yellow);
+    color: var(--blue-deep);
+    padding: 0 10px;
+    border-radius: 10px;
+    display: inline-block;
+    transform: rotate(-1deg);
+  }
+  .hero p {
+    font-size: 17px;
+    opacity: 0.95;
+    margin-bottom: 28px;
+    max-width: 540px;
+  }
+  .start-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--yellow);
+    color: var(--blue-deep);
+    border: none;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 16px 28px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 8px 24px rgba(237,252,61,0.4);
+  }
+  .start-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(237,252,61,0.5);
+  }
+  .start-btn svg { transition: transform 0.2s ease; }
+  .start-btn:hover svg { transform: translateX(4px); }
+
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+  .hero-meta div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    opacity: 0.9;
+  }
+  .hero-meta .check {
+    width: 18px; height: 18px;
+    background: var(--yellow);
+    color: var(--blue-deep);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 11px;
+  }
+
+  /* -------- BODY -------- */
+  .body {
+    padding: 48px;
+  }
+
+  /* Stepper */
+  .stepper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 36px;
+  }
+  .stepper .pip {
+    flex: 1;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--line);
+    transition: background 0.4s ease;
+  }
+  .stepper .pip.active { background: var(--blue-2); }
+  .stepper .pip.done { background: var(--blue-deep); }
+  .step-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
+
+  /* Screens */
+  .screen { display: none; animation: fadeIn 0.45s ease; }
+  .screen.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Questions */
+  .q-title {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: clamp(24px, 3.6vw, 32px);
+    color: var(--blue-deep);
+    line-height: 1.2;
+    margin-bottom: 14px;
+    letter-spacing: -0.4px;
+  }
+  .q-sub {
+    font-size: 16px;
+    color: var(--ink-soft);
+    margin-bottom: 32px;
+    max-width: 620px;
+  }
+  .q-sub strong { color: var(--blue-deep); }
+
+  /* Option buttons */
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  @media (max-width: 560px) {
+    .options { grid-template-columns: 1fr; }
+  }
+  .opt {
+    background: var(--white);
+    border: 2px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 22px 22px 22px 60px;
+    text-align: left;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--blue-deep);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+  }
+  .opt small {
+    display: block;
+    color: var(--ink-soft);
+    font-weight: 500;
+    font-size: 13px;
+    margin-top: 4px;
+  }
+  .opt::before {
+    content: '';
+    position: absolute;
+    left: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--line);
+    background: var(--white);
+    transition: all 0.2s ease;
+  }
+  .opt:hover {
+    border-color: var(--blue-2);
+    background: #f7fbfd;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+  }
+  .opt:hover::before { border-color: var(--blue-2); }
+  .opt.sel {
+    border-color: var(--blue-2);
+    background: #eaf6fd;
+  }
+  .opt.sel::before {
+    background: var(--blue-2);
+    border-color: var(--blue-2);
+    box-shadow: inset 0 0 0 4px var(--white);
+  }
+
+  .info-box {
+    background: #f4fafd;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--blue-2);
+    border-radius: var(--radius-sm);
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .info-box strong { color: var(--blue-deep); }
+
+  /* Nav */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    gap: 14px;
+  }
+  .btn {
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 14px 24px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-primary {
+    background: var(--blue-deep);
+    color: var(--white);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--blue);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+  }
+  .btn-primary:disabled {
+    background: var(--line);
+    color: #95adb7;
+    cursor: not-allowed;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink-soft);
+    padding: 14px 18px;
+  }
+  .btn-ghost:hover { color: var(--blue-deep); }
+
+  /* -------- RESULT SCREENS -------- */
+  .result-head {
+    text-align: center;
+    padding: 20px 0 32px;
+  }
+  .result-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 999px;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  .result-badge.yes {
+    background: var(--yellow);
+    color: var(--blue-deep);
+  }
+  .result-badge.no {
+    background: #fde6dd;
+    color: var(--orange);
+  }
+
+  .result-icon {
+    width: 96px; height: 96px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes pop {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+  .result-icon.yes { background: var(--yellow); }
+  .result-icon.no  { background: #fde6dd; }
+  .result-icon svg { width: 48px; height: 48px; }
+
+  .result-title {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: clamp(28px, 4.2vw, 38px);
+    color: var(--blue-deep);
+    line-height: 1.15;
+    margin-bottom: 14px;
+    letter-spacing: -0.5px;
+  }
+  .result-title em {
+    font-style: normal;
+    color: var(--blue);
+  }
+  .result-desc {
+    font-size: 16px;
+    color: var(--ink-soft);
+    max-width: 580px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Rules cards */
+  .rules-title {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: var(--blue-deep);
+    margin: 36px 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .rules-title::before {
+    content: '';
+    width: 8px; height: 24px;
+    background: var(--blue-2);
+    border-radius: 4px;
+  }
+  .rules {
+    display: grid;
+    gap: 12px;
+  }
+  .rule {
+    background: #f7fbfd;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 18px 20px 18px 54px;
+    position: relative;
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+  .rule::before {
+    content: counter(rule-count);
+    counter-increment: rule-count;
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    width: 26px; height: 26px;
+    background: var(--blue-deep);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    font-family: 'Fredoka', sans-serif;
+  }
+  .rules { counter-reset: rule-count; }
+  .rule strong { color: var(--blue-deep); }
+
+  /* -------- CALCULATOR -------- */
+  .calc-section {
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 1px solid var(--line);
+  }
+  .calc-head {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .calc-eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--blue);
+    background: #eaf6fd;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  .calc-title {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: clamp(26px, 3.8vw, 34px);
+    color: var(--blue-deep);
+    line-height: 1.15;
+    letter-spacing: -0.4px;
+    margin-bottom: 10px;
+  }
+  .calc-subtitle {
+    color: var(--ink-soft);
+    font-size: 15px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* Slider */
+  .slider-wrap {
+    background: linear-gradient(135deg, var(--blue-deep) 0%, #00586f 100%);
+    border-radius: var(--radius-lg);
+    padding: 40px 36px;
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+  .slider-wrap::before {
+    content: '';
+    position: absolute;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: rgba(237,252,61,0.08);
+    top: -80px; right: -80px;
+  }
+  .slider-wrap::after {
+    content: '';
+    position: absolute;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(4,145,217,0.18);
+    bottom: -60px; left: -40px;
+  }
+  .slider-inner { position: relative; z-index: 1; }
+
+  .slider-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 18px;
+  }
+  .slider-label .lbl {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+  .slider-label .val {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 44px;
+    color: var(--yellow);
+    letter-spacing: -1px;
+  }
+  .slider-label .val-unit {
+    font-size: 15px;
+    opacity: 0.8;
+    margin-left: 6px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 500;
+  }
+
+  .slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 999px;
+    outline: none;
+    cursor: pointer;
+  }
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--yellow);
+    cursor: grab;
+    border: 4px solid var(--white);
+    box-shadow: 0 4px 14px rgba(237,252,61,0.5);
+    transition: transform 0.15s ease;
+  }
+  .slider::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.15); }
+  .slider::-moz-range-thumb {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--yellow);
+    cursor: grab;
+    border: 4px solid var(--white);
+    box-shadow: 0 4px 14px rgba(237,252,61,0.5);
+  }
+
+  .slider-ticks {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.6;
+  }
+
+  .cap-note {
+    margin-top: 22px;
+    font-size: 12px;
+    opacity: 0.75;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.08);
+    border-radius: var(--radius-sm);
+  }
+
+  /* Income stats */
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 22px;
+  }
+  @media (max-width: 560px) {
+    .stats { grid-template-columns: 1fr; }
+  }
+  .stat {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 22px 24px;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
+  .stat-value {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 34px;
+    color: var(--blue-deep);
+    letter-spacing: -0.8px;
+    line-height: 1.1;
+  }
+  .stat-sub {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+  .stat.hero-stat {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, var(--yellow) 0%, #fffa7a 100%);
+    border-color: transparent;
+  }
+  .stat.hero-stat .stat-label { color: var(--blue-deep); opacity: 0.8; }
+  .stat.hero-stat .stat-value {
+    font-size: 52px;
+    color: var(--blue-deep);
+  }
+  .stat.hero-stat .stat-sub { color: var(--blue-deep); opacity: 0.75; }
+
+  /* Fun visualizations */
+  .fun-section {
+    margin-top: 32px;
+  }
+  .fun-title {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: var(--blue-deep);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .fun-title::before {
+    content: '';
+    width: 8px; height: 24px;
+    background: var(--blue-2);
+    border-radius: 4px;
+  }
+  .fun-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .fun-card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .fun-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-sm);
+  }
+  .fun-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: #eaf6fd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 22px;
+  }
+  .fun-icon.y { background: #fdffd6; }
+  .fun-icon.g { background: #f4e9c6; }
+  .fun-icon.o { background: #fde6dd; }
+  .fun-text { flex: 1; min-width: 0; }
+  .fun-num {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--blue-deep);
+    line-height: 1.1;
+  }
+  .fun-desc {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+
+  /* Year fill bar */
+  .year-bar-wrap {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    margin-top: 12px;
+  }
+  .year-bar-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+  }
+  .year-bar-head h4 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 16px;
+    color: var(--blue-deep);
+    font-weight: 600;
+  }
+  .year-bar-head span {
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .year-bar {
+    height: 14px;
+    background: var(--bg);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+  }
+  .year-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue-2), var(--blue-deep));
+    border-radius: 999px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+  .year-bar-fill::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 50%;
+    transform: translate(50%, -50%);
+    width: 20px; height: 20px;
+    background: var(--yellow);
+    border-radius: 50%;
+    border: 3px solid var(--white);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  .year-bar-caps {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+
+  /* CTA */
+  .cta-section {
+    margin-top: 40px;
+    background: linear-gradient(135deg, #f4fafd 0%, #eaf6fd 100%);
+    border-radius: var(--radius-md);
+    padding: 36px;
+    text-align: center;
+    border: 1px solid var(--line);
+  }
+  .cta-title {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    color: var(--blue-deep);
+    margin-bottom: 10px;
+  }
+  .cta-desc {
+    color: var(--ink-soft);
+    max-width: 460px;
+    margin: 0 auto 22px;
+    font-size: 15px;
+  }
+  .cta-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .cta-btn {
+    background: var(--blue-deep);
+    color: var(--white);
+    padding: 14px 26px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cta-btn:hover {
+    background: var(--blue);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+  }
+  .cta-btn.secondary {
+    background: var(--white);
+    color: var(--blue-deep);
+    border: 2px solid var(--blue-deep);
+  }
+  .cta-btn.secondary:hover {
+    background: var(--blue-deep);
+    color: var(--white);
+  }
+
+  /* Footer / disclaimer */
+  .disclaimer {
+    margin-top: 28px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-align: center;
+    line-height: 1.6;
+    padding: 0 20px;
+  }
+  .disclaimer strong { color: var(--blue-deep); }
+
+  /* Not eligible alternate CTA */
+  .alt-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 32px;
+  }
+  @media (max-width: 560px) {
+    .alt-options { grid-template-columns: 1fr; }
+  }
+  .alt-opt {
+    background: #f7fbfd;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 22px;
+    text-align: left;
+  }
+  .alt-opt h4 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 16px;
+    color: var(--blue-deep);
+    margin-bottom: 6px;
+  }
+  .alt-opt p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  /* Restart link */
+  .restart {
+    text-align: center;
+    margin-top: 24px;
+  }
+  .restart a {
+    color: var(--ink-soft);
+    font-size: 13px;
+    text-decoration: none;
+    border-bottom: 1px dashed var(--line);
+    padding-bottom: 2px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .restart a:hover { color: var(--blue-deep); border-color: var(--blue-deep); }
+
+  @media (max-width: 640px) {
+    body { padding: 20px 12px 60px; }
+    .hero { padding: 40px 28px 48px; }
+    .body { padding: 32px 24px; }
+    .slider-wrap { padding: 28px 22px; }
+    .cta-section { padding: 28px 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- BRAND BAR -->
+  <div class="brandbar">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      simpl<span style="color: var(--blue-2);">care</span>
+    </div>
+    <div class="brandbar-tag">Wyoming DD Waiver · Free Tool</div>
+  </div>
+
+  <div class="card">
+
+    <!-- ============= HERO / INTRO ============= -->
+    <div class="screen active" id="screen-intro">
+      <div class="hero">
+        <div class="hero-inner">
+          <span class="eyebrow">For Wyoming Parents &amp; Case Managers</span>
+          <h1>Could you get <em>paid</em> to care for your child?</h1>
+          <p>Answer a few quick questions to see if you may qualify as a paid Personal Care provider under Wyoming's DD Waiver — and find out what that could mean for your household income.</p>
+          <button class="start-btn" onclick="goTo('q1')">
+            Start the quick check
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </button>
+          <div class="hero-meta">
+            <div><span class="check">✓</span> Takes about 60 seconds</div>
+            <div><span class="check">✓</span> Based on published WY guidelines</div>
+            <div><span class="check">✓</span> 100% free, no sign-up</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============= Q1: MINOR OR ADULT ============= -->
+    <div class="screen" id="screen-q1">
+      <div class="body">
+        <div class="step-label">Question 1 of 2</div>
+        <div class="stepper"><div class="pip active"></div><div class="pip"></div></div>
+
+        <h2 class="q-title">How old is the participant?</h2>
+        <p class="q-sub">This is the person receiving DD Waiver services — typically your child or the individual you're a parent/guardian for.</p>
+
+        <div class="options" id="q1-options">
+          <button class="opt" data-val="minor" onclick="pickQ1(this)">
+            Minor (under 18)
+            <small>Child has not yet turned 18</small>
+          </button>
+          <button class="opt" data-val="adult" onclick="pickQ1(this)">
+            Adult (18 or older)
+            <small>Participant is 18+ years old</small>
+          </button>
+        </div>
+
+        <div class="nav-row">
+          <button class="btn btn-ghost" onclick="goTo('intro')">← Back</button>
+          <button class="btn btn-primary" id="q1-next" disabled onclick="afterQ1()">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============= Q2-ADULT: GUARDIAN? ============= -->
+    <div class="screen" id="screen-q2a">
+      <div class="body">
+        <div class="step-label">Question 2 of 2</div>
+        <div class="stepper"><div class="pip done"></div><div class="pip active"></div></div>
+
+        <h2 class="q-title">Are you the legal guardian of this adult participant?</h2>
+        <p class="q-sub">In Wyoming, a parent who is also the <strong>legal guardian</strong> of an adult DD Waiver participant is not eligible to be the paid Personal Care provider. A parent who is <strong>not</strong> the legal guardian may be eligible.</p>
+
+        <div class="info-box">
+          <strong>Quick primer:</strong> When an adult has a legal guardian, that guardian makes major life decisions on their behalf. Many adult DD Waiver participants do <em>not</em> have a legal guardian — they may have a supported decision-making arrangement, a representative payee, or manage their own affairs.
+        </div>
+
+        <div class="options" id="q2a-options">
+          <button class="opt" data-val="guardian-yes" onclick="pickQ2a(this)">
+            Yes, I am the legal guardian
+            <small>There's a formal court-appointed guardianship</small>
+          </button>
+          <button class="opt" data-val="guardian-no" onclick="pickQ2a(this)">
+            No, I'm the parent but not guardian
+            <small>No formal guardianship in place</small>
+          </button>
+        </div>
+
+        <div class="nav-row">
+          <button class="btn btn-ghost" onclick="goTo('q1')">← Back</button>
+          <button class="btn btn-primary" id="q2a-next" disabled onclick="afterQ2a()">See my result →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============= Q2-MINOR: EXTRAORDINARY CARE? ============= -->
+    <div class="screen" id="screen-q2m">
+      <div class="body">
+        <div class="step-label">Question 2 of 2</div>
+        <div class="stepper"><div class="pip done"></div><div class="pip active"></div></div>
+
+        <h2 class="q-title">Does your child qualify for "extraordinary care"?</h2>
+        <p class="q-sub">For a parent of a minor to be paid as a Personal Care provider under Wyoming's DD Waiver, the child must meet the criteria for <strong>extraordinary care</strong>.</p>
+
+        <div class="info-box">
+          <strong>Both of the following must be true:</strong>
+          <ul style="margin-top: 10px; margin-left: 20px; line-height: 1.8;">
+            <li>The participant's <strong>Adaptive Behavior Quotient (ABQ)</strong> is <strong>0.35 or lower</strong> on the ICAP assessment</li>
+            <li><strong>AND</strong> the assistance they need goes beyond what a legally responsible parent would normally do for a same-age child without a disability</li>
+          </ul>
+          <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 13px;">
+            💡 <strong>Not sure?</strong> Your case manager and the ICAP assessment results will confirm this.
+          </div>
+        </div>
+
+        <div class="options" id="q2m-options">
+          <button class="opt" data-val="ex-yes" onclick="pickQ2m(this)">
+            Yes, both criteria are met
+            <small>ABQ ≤ 0.35 and needs exceed typical care</small>
+          </button>
+          <button class="opt" data-val="ex-no" onclick="pickQ2m(this)">
+            No (or not sure yet)
+            <small>Criteria aren't met, or assessment hasn't been done</small>
+          </button>
+        </div>
+
+        <div class="nav-row">
+          <button class="btn btn-ghost" onclick="goTo('q1')">← Back</button>
+          <button class="btn btn-primary" id="q2m-next" disabled onclick="afterQ2m()">See my result →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============= ELIGIBLE ============= -->
+    <div class="screen" id="screen-eligible">
+      <div class="body">
+        <div class="result-head">
+          <div class="result-icon yes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#003f51" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <span class="result-badge yes">You may be eligible</span>
+          <h2 class="result-title">Based on what you shared, <em>you may qualify</em> to be the paid Personal Care provider</h2>
+          <p class="result-desc" id="eligible-reason">Here's what to know next — and what your income could look like.</p>
+        </div>
+
+        <div class="rules-title">A few important rules to know</div>
+        <div class="rules">
+          <div class="rule">
+            <strong>You need a provider connection.</strong> A relative can only provide paid Personal Care by either <strong>(a)</strong> becoming a certified provider with an LLC or corporation, or <strong>(b)</strong> working as an employee of an already-certified provider agency.
+          </div>
+          <div class="rule">
+            <strong>There's a daily cap.</strong> Paid hours for a relative provider cannot exceed <strong>4 hours per day</strong> — which works out to a maximum of <strong>5,840 units (1,460 hours) per year</strong>.
+          </div>
+          <div class="rule">
+            <strong>It has to be in the IPC.</strong> The number of service units must be justified in your Individualized Plan of Care, based on the participant's assessed needs.
+          </div>
+          <div class="rule" id="rule-extra" style="display:none;">
+            <strong>Extraordinary care is required (for minors).</strong> The participant's needs must be documented as exceeding typical parental care, with an ICAP Adaptive Behavior Quotient of 0.35 or lower.
+          </div>
+        </div>
+
+        <!-- ============= INCOME CALCULATOR ============= -->
+        <div class="calc-section">
+          <div class="calc-head">
+            <span class="calc-eyebrow">Income Estimator</span>
+            <h3 class="calc-title">See what you could earn through Simpl Care</h3>
+            <p class="calc-subtitle">We pay <strong>$18.25/hour</strong> for Personal Care. Drag the slider to explore different weekly hours.</p>
+          </div>
+
+          <div class="slider-wrap">
+            <div class="slider-inner">
+              <div class="slider-label">
+                <span class="lbl">Weekly hours</span>
+                <span><span class="val" id="hours-val">15</span><span class="val-unit">hrs/week</span></span>
+              </div>
+              <input type="range" min="5" max="28" value="15" step="1" class="slider" id="hours-slider" />
+              <div class="slider-ticks">
+                <span>5 hrs</span>
+                <span>14 hrs</span>
+                <span>21 hrs</span>
+                <span>28 hrs (max)</span>
+              </div>
+              <div class="cap-note">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                Wyoming caps relative-provider Personal Care at 4 hours/day (28 hrs/week).
+              </div>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div class="stat hero-stat">
+              <div class="stat-label">Estimated annual income</div>
+              <div class="stat-value" id="annual-val">$14,235</div>
+              <div class="stat-sub" id="annual-sub">At 15 hrs/week × $18.25/hr × 52 weeks</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Per Week</div>
+              <div class="stat-value" id="weekly-val">$273.75</div>
+              <div class="stat-sub">Gross, before taxes</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Per Month</div>
+              <div class="stat-value" id="monthly-val">$1,186.25</div>
+              <div class="stat-sub">Roughly 4.33 weeks</div>
+            </div>
+          </div>
+
+          <!-- Year progress bar -->
+          <div class="year-bar-wrap">
+            <div class="year-bar-head">
+              <h4>Your hours vs. the annual cap</h4>
+              <span id="year-cap-txt">780 of 1,460 hrs/yr</span>
+            </div>
+            <div class="year-bar">
+              <div class="year-bar-fill" id="year-bar-fill" style="width: 53.4%;"></div>
+            </div>
+            <div class="year-bar-caps">
+              <span>0 hrs</span>
+              <span>1,460 hrs (WY max)</span>
+            </div>
+          </div>
+
+          <!-- Fun comparisons -->
+          <div class="fun-section">
+            <div class="fun-title">What that income could cover</div>
+            <div class="fun-grid" id="fun-grid">
+              <!-- filled by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-section">
+          <h3 class="cta-title">Ready to take the next step?</h3>
+          <p class="cta-desc">Simpl Care is a certified Wyoming provider. We can help you navigate the paperwork, get onboarded, and start earning while caring for your loved one.</p>
+          <div class="cta-buttons">
+            <a href="https://simplcareservices.com" class="cta-btn" target="_blank" rel="noopener">
+              Talk to Simpl Care
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+            <a href="https://simplcareservices.com" class="cta-btn secondary" target="_blank" rel="noopener">Learn more</a>
+          </div>
+        </div>
+
+        <div class="disclaimer">
+          <strong>Heads up:</strong> This tool provides an informational estimate based on Wyoming's published DD Waiver guidelines. It is not an official eligibility determination. Final eligibility, hours authorized, and service plans are determined through your IPC and the Wyoming Department of Health. Hourly rate of $18.25 reflects Simpl Care's current Personal Care pay; gross figures shown do not account for taxes or withholdings.
+        </div>
+
+        <div class="restart">
+          <a onclick="restart()">↺ Start over</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============= NOT ELIGIBLE ============= -->
+    <div class="screen" id="screen-not-eligible">
+      <div class="body">
+        <div class="result-head">
+          <div class="result-icon no">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#de4e20" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          </div>
+          <span class="result-badge no">Not eligible for this service</span>
+          <h2 class="result-title" id="not-eligible-title">Based on your answers, you may not qualify as a paid Personal Care provider</h2>
+          <p class="result-desc" id="not-eligible-reason"></p>
+        </div>
+
+        <div class="info-box" id="not-eligible-detail" style="margin-top: 0;">
+          <!-- filled by JS -->
+        </div>
+
+        <div class="rules-title">But there may still be options</div>
+        <div class="alt-options">
+          <div class="alt-opt">
+            <h4>🤝 Other waiver services</h4>
+            <p>Respite, Homemaker, and other services may be available — and some have different rules about who can provide them. A case manager can help you map it out.</p>
+          </div>
+          <div class="alt-opt">
+            <h4>👪 A non-relative provider</h4>
+            <p>If a relative isn't eligible, a qualified non-relative provider through an agency like Simpl Care can still deliver Personal Care to your loved one.</p>
+          </div>
+          <div class="alt-opt">
+            <h4>⚖️ Guardianship review (adults)</h4>
+            <p>Some families explore supported decision-making as an alternative to guardianship. Talk with your case manager and a family-law attorney before making changes.</p>
+          </div>
+          <div class="alt-opt">
+            <h4>📋 Re-assess needs (minors)</h4>
+            <p>If your child's needs have changed, an updated ICAP assessment may lead to a different result. Your case manager can request a reassessment.</p>
+          </div>
+        </div>
+
+        <div class="cta-section">
+          <h3 class="cta-title">Want to talk it through?</h3>
+          <p class="cta-desc">Simpl Care works with families across Wyoming. We're happy to answer questions — even if a paid-parent arrangement isn't the right fit right now.</p>
+          <div class="cta-buttons">
+            <a href="https://simplcareservices.com" class="cta-btn" target="_blank" rel="noopener">
+              Get in touch
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="disclaimer">
+          <strong>Heads up:</strong> This tool is informational only and reflects published Wyoming DD Waiver guidelines. It is not an official eligibility determination. For an official answer, work with your Case Manager and the Wyoming Department of Health.
+        </div>
+
+        <div class="restart">
+          <a onclick="restart()">↺ Start over</a>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- /card -->
+
+</div>
+
+<script>
+  // ---------- State ----------
+  const state = {
+    age: null,       // 'minor' | 'adult'
+    guardian: null,  // 'guardian-yes' | 'guardian-no'
+    extra: null,     // 'ex-yes' | 'ex-no'
+  };
+
+  const RATE = 18.25;
+  const MAX_HRS_YEAR = 1460; // 4 hrs/day × 365 = 1460
+
+  // ---------- Navigation ----------
+  function goTo(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function restart() {
+    state.age = state.guardian = state.extra = null;
+    document.querySelectorAll('.opt.sel').forEach(b => b.classList.remove('sel'));
+    document.querySelectorAll('.btn-primary').forEach(b => { if (b.id && b.id.endsWith('-next')) b.disabled = true; });
+    goTo('intro');
+  }
+
+  // ---------- Question 1 ----------
+  function pickQ1(el) {
+    document.querySelectorAll('#q1-options .opt').forEach(b => b.classList.remove('sel'));
+    el.classList.add('sel');
+    state.age = el.dataset.val;
+    document.getElementById('q1-next').disabled = false;
+  }
+  function afterQ1() {
+    goTo(state.age === 'adult' ? 'q2a' : 'q2m');
+  }
+
+  // ---------- Question 2a (Adult) ----------
+  function pickQ2a(el) {
+    document.querySelectorAll('#q2a-options .opt').forEach(b => b.classList.remove('sel'));
+    el.classList.add('sel');
+    state.guardian = el.dataset.val;
+    document.getElementById('q2a-next').disabled = false;
+  }
+  function afterQ2a() {
+    if (state.guardian === 'guardian-yes') {
+      showNotEligible('adult-guardian');
+    } else {
+      showEligible('adult-non-guardian');
+    }
+  }
+
+  // ---------- Question 2m (Minor) ----------
+  function pickQ2m(el) {
+    document.querySelectorAll('#q2m-options .opt').forEach(b => b.classList.remove('sel'));
+    el.classList.add('sel');
+    state.extra = el.dataset.val;
+    document.getElementById('q2m-next').disabled = false;
+  }
+  function afterQ2m() {
+    if (state.extra === 'ex-yes') {
+      showEligible('minor-extraordinary');
+    } else {
+      showNotEligible('minor-no-extra');
+    }
+  }
+
+  // ---------- Results ----------
+  function showEligible(context) {
+    const reasonEl = document.getElementById('eligible-reason');
+    const extraRule = document.getElementById('rule-extra');
+
+    if (context === 'adult-non-guardian') {
+      reasonEl.textContent = "As a parent of an adult participant where you are not the legal guardian, Wyoming's DD Waiver allows you to be the paid Personal Care provider — if you go through the proper provider channel.";
+      extraRule.style.display = 'none';
+    } else if (context === 'minor-extraordinary') {
+      reasonEl.textContent = "As the parent of a minor whose needs qualify as extraordinary care, Wyoming's DD Waiver allows a legally responsible individual to be the paid Personal Care provider — up to 4 hours per day.";
+      extraRule.style.display = 'block';
+    }
+
+    goTo('eligible');
+    updateCalc();
+  }
+
+  function showNotEligible(context) {
+    const titleEl = document.getElementById('not-eligible-title');
+    const reasonEl = document.getElementById('not-eligible-reason');
+    const detailEl = document.getElementById('not-eligible-detail');
+
+    if (context === 'adult-guardian') {
+      titleEl.innerHTML = 'A legal guardian of an adult participant <em style="font-style:normal;color:var(--orange);">cannot</em> be the paid Personal Care provider';
+      reasonEl.textContent = "Wyoming's DD Waiver rules don't allow a legal guardian of an adult participant to also be that participant's paid Personal Care provider.";
+      detailEl.innerHTML = '<strong>Why?</strong> The rule helps keep the roles of decision-maker and paid caregiver separate, which protects the participant. Paid Personal Care for an adult participant would need to come from a non-guardian provider — either a non-guardian parent, another family member who isn\'t the guardian, or a non-relative provider through a certified agency.';
+    } else if (context === 'minor-no-extra') {
+      titleEl.innerHTML = 'Parents of minors can only be paid if the child qualifies for <em style="font-style:normal;color:var(--orange);">extraordinary care</em>';
+      reasonEl.textContent = "Without a documented need for extraordinary care, a legally responsible parent cannot be paid as the Personal Care provider under Wyoming's DD Waiver.";
+      detailEl.innerHTML = '<strong>Two criteria must both be met:</strong><ul style="margin-top:10px;margin-left:20px;line-height:1.8;"><li>ICAP Adaptive Behavior Quotient of <strong>0.35 or lower</strong></li><li>Care needs that <strong>exceed</strong> what a parent of a same-age child without a disability would typically provide</li></ul><div style="margin-top:12px;">If you believe your child\'s situation has changed, ask your case manager about requesting an updated assessment.</div>';
+    }
+
+    goTo('not-eligible');
+  }
+
+  // ---------- Income Calculator ----------
+  const slider = document.getElementById('hours-slider');
+  const hoursVal = document.getElementById('hours-val');
+  const annualVal = document.getElementById('annual-val');
+  const annualSub = document.getElementById('annual-sub');
+  const weeklyVal = document.getElementById('weekly-val');
+  const monthlyVal = document.getElementById('monthly-val');
+  const yearBarFill = document.getElementById('year-bar-fill');
+  const yearCapTxt = document.getElementById('year-cap-txt');
+  const funGrid = document.getElementById('fun-grid');
+
+  function fmt(n) {
+    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  }
+  function fmt2(n) {
+    return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function updateCalc() {
+    const hrs = parseInt(slider.value, 10);
+    const weekly = hrs * RATE;
+    const monthly = weekly * (52 / 12);
+    const annual = weekly * 52;
+    const yearHours = hrs * 52;
+    const pct = Math.min(100, (yearHours / MAX_HRS_YEAR) * 100);
+
+    hoursVal.textContent = hrs;
+    annualVal.textContent = fmt(annual);
+    annualSub.textContent = `At ${hrs} hrs/week × $${RATE.toFixed(2)}/hr × 52 weeks`;
+    weeklyVal.textContent = fmt2(weekly);
+    monthlyVal.textContent = fmt2(monthly);
+
+    yearBarFill.style.width = pct + '%';
+    yearCapTxt.textContent = `${yearHours.toLocaleString()} of ${MAX_HRS_YEAR.toLocaleString()} hrs/yr`;
+
+    // Fun visualizations
+    const funData = [
+      {
+        icon: '🏠',
+        cls: 'g',
+        num: fmt(Math.round(annual / 12)),
+        desc: "Extra toward rent or mortgage every month"
+      },
+      {
+        icon: '🛒',
+        cls: 'y',
+        num: Math.round(annual / 100) + ' grocery runs',
+        desc: "Estimating $100 per weekly trip for the family"
+      },
+      {
+        icon: '⛽',
+        cls: 'o',
+        num: Math.round(annual / 60).toLocaleString() + ' tanks',
+        desc: "Fuel-ups at about $60 per fill"
+      },
+      {
+        icon: '☕',
+        cls: 'y',
+        num: Math.round(annual / 6).toLocaleString() + ' coffees',
+        desc: "At your favorite local café, $6 each"
+      },
+      {
+        icon: '🎓',
+        cls: '',
+        num: fmt(Math.round(annual * 5)),
+        desc: "Over 5 years — solid start to a college fund"
+      },
+      {
+        icon: '🏖️',
+        cls: 'g',
+        num: Math.round(annual / 2500).toLocaleString() + ' family trips',
+        desc: "Road-trip budget of about $2,500 each"
+      }
+    ];
+
+    funGrid.innerHTML = funData.map(d => `
+      <div class="fun-card">
+        <div class="fun-icon ${d.cls}">${d.icon}</div>
+        <div class="fun-text">
+          <div class="fun-num">${d.num}</div>
+          <div class="fun-desc">${d.desc}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  slider.addEventListener('input', updateCalc);
+
+  // Initialize on load
+  updateCalc();
+</script>
+
+</body>
+</html>
